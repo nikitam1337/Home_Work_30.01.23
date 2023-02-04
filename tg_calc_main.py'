@@ -1,2 +1,39 @@
+import telebot
+from telebot import types
+import datetime
+import random
+bot = telebot.TeleBot("5839553872:AAFi3Z5o1w-LMX3nJzUug3P-5-1X2xgaSwY")
+
+a = 0
+b = 0
+znak = ""
 
 
+@bot.message_handler(commands=["start"])
+def start(message):
+    bot.send_message(message.chat.id, "Привет. Калькулятор включен!")
+    button(message)
+
+
+
+@bot.message_handler(commands=["button"])
+def button(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    but1 = types.KeyboardButton("Целые числа")
+    but2 = types.KeyboardButton("Комплексные числа")
+    markup.add(but1)
+    markup.add(but2)
+    bot.send_message(message.chat.id, "Выберите режим работы калькулятора", reply_markup=markup)
+
+@bot.message_handler(content_types = "text")
+def controller(message):
+    print(message.text)
+    if message.text == "Целые числа":
+        bot.send_message(message.chat.id,"введи фамилю и имя")
+        bot.register_next_step_handler(message,sentence)
+
+        
+    elif message.text == "Комплексные числа":
+        bot.send_message(message.chat.id,f"текущее время - {datetime.datetime.now()}")
+
+bot.infinity_polling()
