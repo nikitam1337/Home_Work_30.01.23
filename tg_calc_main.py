@@ -1,7 +1,9 @@
 import telebot
 from telebot import types
+from spy import *
 
-bot = telebot.TeleBot("5839553872:AAFi3Z5o1w-LMX3nJzUug3P-5-1X2xgaSwY")
+
+bot = telebot.TeleBot("token")
 
 a = 0
 b = 0
@@ -9,6 +11,7 @@ znak = ""
 
 @bot.message_handler(commands=["start"])
 def start(message):
+    log_command(message)
     bot.send_message(message.chat.id, "Привет. Калькулятор включен!")
     button(message)
 
@@ -26,6 +29,7 @@ def button(message):
 
 @bot.message_handler(content_types="text")
 def controller(message):
+    log_command(message)
     print(message.text)
     if message.text == "Целые числа":
         bot.send_message(message.chat.id, "Введите два числа через пробел")
@@ -37,6 +41,7 @@ def controller(message):
         bot.send_message(message.chat.id, "Ошибка, введите команду: /start")
 
 def user_numbers(message):
+    log_command(message)
     global a,b
     numbers = message.text
     a = int(numbers.split()[0])
@@ -44,6 +49,7 @@ def user_numbers(message):
     button_znaki_int(message)
 
 def user_complex_numbers(message):
+    log_command(message)
     global a,b
     numbers = message.text
     a = complex(numbers.split()[0])
@@ -68,6 +74,7 @@ def button_znaki_int(message):
     bot.register_next_step_handler(message, operators)
 
 def button_znaki_complex(message):
+    log_command(message)
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     but1 = types.KeyboardButton("+")
     but2 = types.KeyboardButton("-")
@@ -82,6 +89,7 @@ def button_znaki_complex(message):
 
 @bot.message_handler(content_types="text")
 def operators(message):
+    log_command(message)
     global a,b
     result = 0
     if message.text == "+":
